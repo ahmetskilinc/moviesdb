@@ -1,91 +1,102 @@
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
-import styles from './page.module.css'
+// types
+import type { HomeProps } from "../models/props";
+import type { Movies } from "../models/movie_popular";
+import type { TvPopular } from "../models/tv_popular";
+import type { HomeHero as HomeHeroType } from "../models/home_hero";
 
-const inter = Inter({ subsets: ['latin'] })
+import { key, endpoint } from "../lib/api_lib";
 
-export default function Home() {
-  return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+// components
+import Head from "next/head";
+import axios from "axios";
+import LoadingSpinner from "../components/LoadingSpinner";
+import MoviesList from "../components/MoviesList";
+import HomeHero from "../components/HomeHero";
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-        <div className={styles.thirteen}>
-          <Image src="/thirteen.svg" alt="13" width={40} height={31} priority />
-        </div>
-      </div>
+const getHomeHero = async () => {
+	let returnObject: HomeHeroType[] = [];
+	await axios.get(`${endpoint}trending/movie/day?${key}`).then((response) => {
+		response.data.results.slice(0, 2).map((item: HomeHeroType) => {
+			returnObject.push({
+				poster_path: item.poster_path,
+				title: item.title,
+				overview: item.overview,
+				id: item.id,
+				backdrop_path: item.backdrop_path,
+				type: "movie",
+				hero_title: "Trending Movie",
+			} as HomeHeroType);
+		});
+	});
 
-      <div className={styles.grid}>
-        <a
-          href="https://beta.nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+	await axios.get(`${endpoint}trending/tv/day?${key}`).then((response) => {
+		response.data.results.slice(0, 2).map((item: HomeHeroType) => {
+			returnObject.push({
+				poster_path: item.poster_path,
+				name: item.name,
+				overview: item.overview,
+				id: item.id,
+				backdrop_path: item.backdrop_path,
+				type: "tv",
+				hero_title: "Trending TV",
+			} as HomeHeroType);
+		});
+	});
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>Explore the Next.js 13 playground.</p>
-        </a>
+	return returnObject;
+};
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
-}
+const getMoviesPopular = async () => {
+	return await axios.get(`${endpoint}movie/popular?${key}&language=en-US&page=1`).then((response) => {
+		return response.data.results.map((item: Movies.Result) => {
+			return {
+				id: item.id,
+				title: item.title,
+				poster_path: item.poster_path,
+			};
+		});
+	});
+};
+
+const getTvPopular = async () => {
+	return await axios.get(`${endpoint}tv/popular?${key}&language=en-US&page=1`).then((response) => {
+		return response.data.results.map((item: TvPopular.Result) => {
+			return {
+				id: item.id,
+				name: item.name,
+				poster_path: item.poster_path,
+			};
+		});
+	});
+};
+
+const Page = async () => {
+	const homeHero = await getHomeHero();
+	const moviesPopular = await getMoviesPopular();
+	const tvPopular = await getTvPopular();
+
+	return (
+		<>
+			<Head>
+				<title>MovieDB</title>
+				<meta name="description" content="MovieDB - Find films and movies from everywhere." />
+				<link rel="icon" href="/favicon.ico" />
+			</Head>
+
+			<main>
+				{homeHero !== null && moviesPopular !== null && tvPopular !== null ? (
+					<>
+						<HomeHero movies={homeHero} />
+						<MoviesList movies={moviesPopular} listTitle="Popular movies this week" type="movie" compact={false} />
+						<div className="divider"></div>
+						<MoviesList movies={tvPopular} listTitle="Popular TV shows this week" type="tv" compact={false} />
+					</>
+				) : (
+					<LoadingSpinner />
+				)}
+			</main>
+		</>
+	);
+};
+
+export default Page;
