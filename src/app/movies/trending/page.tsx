@@ -1,7 +1,7 @@
-export default function Home() {
+export default function Page() {
 	return (
 		<main>
-			<p>Trending TV</p>
+			<p>Trending Movies</p>
 		</main>
 	);
 }
