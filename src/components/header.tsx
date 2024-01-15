@@ -6,15 +6,15 @@ const NavbarItems = () => {
 			<li>
 				<Link href="/movies/popular">Popular movies</Link>
 			</li>
-			<li>
+			{/* <li>
 				<Link href="/movies/trending">Trending movies</Link>
-			</li>
+			</li> */}
 			<li>
 				<Link href="/tv/popular">Popular TV shows</Link>
 			</li>
-			<li>
+			{/* <li>
 				<Link href="/tv/trending">Trending TV shows</Link>
-			</li>
+			</li> */}
 		</>
 	);
 };
