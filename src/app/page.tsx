@@ -4,9 +4,11 @@ import type { Movies } from "../models/movie_popular";
 import type { TvPopular } from "../models/tv_popular";
 import type { HomeHero as HomeHeroType } from "../models/home_hero";
 
-import dynamic from "next/dynamic";
+import { default as dynamicComponentLoader } from "next/dynamic";
 
-const HomeHero = dynamic(() => import("../components/HomeHero"), {
+export const dynamic = "force-dynamic";
+
+const HomeHero = dynamicComponentLoader(() => import("../components/HomeHero"), {
 	ssr: false,
 });
 

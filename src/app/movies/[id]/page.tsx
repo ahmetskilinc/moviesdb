@@ -14,6 +14,8 @@ import Reviews from "../../../components/Reviews";
 import MoviesList from "../../../components/MoviesList";
 import WatchProviders from "../../../components/WatchProviders";
 
+export const dynamic = "force-dynamic";
+
 const getData = async (id: number) => {
 	const movie = await axios({
 		method: "get",

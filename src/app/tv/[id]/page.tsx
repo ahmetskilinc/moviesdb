@@ -7,6 +7,8 @@ import MoviesList from "../../../components/MoviesList";
 import axios from "axios";
 import { key, endpoint } from "../../../lib/api_lib";
 
+export const dynamic = "force-dynamic";
+
 const getData = async (id: number) => {
 	const movie = await axios({
 		method: "get",

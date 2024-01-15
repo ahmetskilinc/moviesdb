@@ -3,6 +3,8 @@ import MoviesList from "../../../components/MoviesList";
 import Container from "@/components/container";
 import { getList } from "@/_api/getList";
 
+export const dynamic = "force-dynamic";
+
 const getData = async () => {
 	const trendingMovies1 = (await getList(`${endpoint}movie/top-rated?${key}&language=en-US&page=1`)).results;
 	const trendingMovies2 = (await getList(`${endpoint}movie/top-rated?${key}&language=en-US&page=2`)).results;

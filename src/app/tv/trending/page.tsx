@@ -4,6 +4,8 @@ import Container from "@/components/container";
 import { getList } from "@/_api/getList";
 import React from "react";
 
+export const dynamic = "force-dynamic";
+
 const getData = async () => {
 	const popularMovies1 = (await getList(`${endpoint}tv/popular?${key}&language=en-US&page=1`)).results;
 	const popularMovies2 = (await getList(`${endpoint}tv/popular?${key}&language=en-US&page=2`)).results;
