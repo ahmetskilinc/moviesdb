@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-	content: ["./src/**/*.{js,ts,jsx,tsx}"],
+	content: ["./src/**/*.{js,ts,jsx,tsx}", "./node_modules/tw-elements/dist/js/**/*.js"],
 	theme: {
 		extend: {
 			width: {
@@ -18,8 +18,8 @@ module.exports = {
 			},
 		},
 	},
-	plugins: [require("daisyui"), require("tw-elements/dist/plugin")],
+	plugins: [require("daisyui"), require("tw-elements/dist/plugin.cjs")],
 	daisyui: {
-		themes: ["night"],
+		themes: ["forest"],
 	},
 };
