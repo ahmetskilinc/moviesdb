@@ -4,6 +4,12 @@ import type { Movies } from "../models/movie_popular";
 import type { TvPopular } from "../models/tv_popular";
 import type { HomeHero as HomeHeroType } from "../models/home_hero";
 
+import dynamic from "next/dynamic";
+
+const HomeHero = dynamic(() => import("../components/HomeHero"), {
+	ssr: false,
+});
+
 import { key, endpoint } from "../lib/api_lib";
 
 // components
@@ -11,7 +17,6 @@ import Head from "next/head";
 import axios from "axios";
 import LoadingSpinner from "../components/LoadingSpinner";
 import MoviesList from "../components/MoviesList";
-import HomeHero from "../components/HomeHero";
 
 const getHomeHero = async () => {
 	let returnObject: HomeHeroType[] = [];

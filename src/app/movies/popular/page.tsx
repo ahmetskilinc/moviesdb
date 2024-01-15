@@ -1,67 +1,36 @@
-import axios from "axios";
 import { key, endpoint } from "../../../lib/api_lib";
-import Head from "next/head";
 import MoviesList from "../../../components/MoviesList";
+import Container from "@/components/container";
+import { getList } from "@/_api/getList";
+import React from "react";
 
 const getData = async () => {
-	const popularMovies1 = await axios({
-		method: "get",
-		url: `${endpoint}movie/popular?${key}&language=en-US&page=1`,
-	}).then((response) => {
-		return response.data.results;
-	});
+	const popularMovies1 = (await getList(`${endpoint}movie/popular?${key}&language=en-US&page=1`)).results;
+	const popularMovies2 = (await getList(`${endpoint}movie/popular?${key}&language=en-US&page=2`)).results;
+	const popularMovies3 = (await getList(`${endpoint}movie/popular?${key}&language=en-US&page=3`)).results;
+	const popularMovies4 = (await getList(`${endpoint}movie/popular?${key}&language=en-US&page=4`)).results;
 
-	const popularMovies2 = await axios({
-		method: "get",
-		url: `${endpoint}movie/popular?${key}&language=en-US&page=2`,
-	}).then((response) => {
-		return response.data.results;
-	});
-
-	const popularMovies3 = await axios({
-		method: "get",
-		url: `${endpoint}movie/popular?${key}&language=en-US&page=3`,
-	}).then((response) => {
-		return response.data.results;
-	});
-
-	const popularMovies4 = await axios({
-		method: "get",
-		url: `${endpoint}movie/popular?${key}&language=en-US&page=4`,
-	}).then((response) => {
-		return response.data.results;
-	});
-
-	return {
-		popularMovies1,
-		popularMovies2,
-		popularMovies3,
-		popularMovies4,
-	};
+	return [popularMovies1, popularMovies2, popularMovies3, popularMovies4];
 };
 
 const MoviePopular = async () => {
-	const { popularMovies1, popularMovies2, popularMovies3, popularMovies4 } = await getData();
+	const data = await getData();
 	return (
-		<>
-			<Head>
-				<title>Popular Movies | MovieDB</title>
-				<meta name="description" content="MovieDB - Find films and movies from everywhere." />
-				<link rel="icon" href="/favicon.ico" />
-			</Head>
-
-			<main>
-				{popularMovies1 !== null && (
-					<MoviesList movies={popularMovies1} listTitle="Popular movies this week" type="movie" compact={false} />
-				)}
-				<div className="divider"></div>
-				{popularMovies2 !== null && <MoviesList movies={popularMovies2} type="movie" compact={false} />}
-				<div className="divider"></div>
-				{popularMovies3 !== null && <MoviesList movies={popularMovies3} type="movie" compact={false} />}
-				<div className="divider"></div>
-				{popularMovies4 !== null && <MoviesList movies={popularMovies4} type="movie" compact={false} />}
-			</main>
-		</>
+		<Container>
+			{data.map((list, index) => {
+				return (
+					<React.Fragment key={index}>
+						<MoviesList
+							movies={list}
+							listTitle={index === 0 ? "Popular movies this week" : undefined}
+							type="movie"
+							compact={false}
+						/>
+						{index !== list.length - 1 ? <div className="divider"></div> : null}
+					</React.Fragment>
+				);
+			})}
+		</Container>
 	);
 };
 

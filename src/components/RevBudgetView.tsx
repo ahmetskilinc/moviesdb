@@ -6,7 +6,7 @@ import type { RevBudgetProps } from "../models/props";
 const RevenueBudgetView = (props: RevBudgetProps) => {
 	const { budget, revenue } = props;
 	return (
-		<div className="w-full my-2 md:my-4 mx-auto lg:max-w-cs px-cs">
+		<div className="w-full my-2 md:my-4 mx-auto lg:max-w-cs">
 			<div className={`stats bg-secondary-content text-secondary rounded-md flex flex-wrap lg:inline-grid`}>
 				<div className="stat">
 					<div className="stat-title">Budget</div>

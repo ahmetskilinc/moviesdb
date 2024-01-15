@@ -75,7 +75,7 @@ const getData = async (id: number) => {
 	};
 };
 
-const Movie = async ({ params }: { params: { id: number } }) => {
+export default async function Movies({ params }: { params: { id: number } }) {
 	const { movie, movieCredits, movieExternalIds, movieRecommendations, movieReviews, movieWatchProviders, providers } = await getData(
 		params.id
 	);
@@ -109,12 +109,10 @@ const Movie = async ({ params }: { params: { id: number } }) => {
 			{movieCredits !== null && <Cast credits={movieCredits} />}
 			{movieWatchProviders !== null && <WatchProviders movieWatchProviders={movieWatchProviders} providers={providers} />}
 			{movieReviews !== null && <Reviews reviews={movieReviews} />}
-			{/* {movie !== null && <RevenueBudgetView budget={movie.budget} revenue={movie.revenue} />} */}
+			{movie !== null ? movie.revenue ? <RevenueBudgetView budget={movie.budget} revenue={movie.revenue} /> : null : null}
 			{movieRecommendations !== null && (
 				<MoviesList listTitle="Similar Movies" movies={movieRecommendations.results} type="movie" compact={true} />
 			)}
 		</>
 	);
-};
-
-export default Movie;
+}
