@@ -1,21 +1,16 @@
-// types
 import type { HomeHero as HomeHeroType } from "../models/home_hero";
 import type { Movies } from "../models/movie_popular";
 import type { TvPopular } from "../models/tv_popular";
-
+import { getList } from "@/_api/getList";
+import LoadingSpinner from "../components/LoadingSpinner";
+import MoviesList from "../components/MoviesList";
 import { default as dynamicComponentLoader } from "next/dynamic";
-
-export const dynamic = "force-dynamic";
 
 const HomeHero = dynamicComponentLoader(() => import("../components/HomeHero"), {
 	ssr: false,
 });
 
-// components
-import axios from "axios";
-import LoadingSpinner from "../components/LoadingSpinner";
-import MoviesList from "../components/MoviesList";
-import { getList } from "@/_api/getList";
+export const dynamic = "force-dynamic";
 
 const getHomeHero = async () => {
 	let returnObject: HomeHeroType[] = [];

@@ -13,7 +13,7 @@ const getData = async () => {
 	return [trending1, trending2, trending3, trending4];
 };
 
-const Page = async () => {
+export default async function Page() {
 	const data = await getData();
 	return data.map((list, index) => (
 		<>
@@ -21,6 +21,8 @@ const Page = async () => {
 			{index !== list.length - 1 ? <div className="divider"></div> : null}
 		</>
 	));
-};
+}
 
-export default Page;
+export const metadata = {
+	title: "Trending movies",
+};

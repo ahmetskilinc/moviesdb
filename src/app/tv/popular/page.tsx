@@ -13,7 +13,7 @@ const getData = async () => {
 	return [popular1, popular2, popular3, popular4];
 };
 
-const MoviePopular = async () => {
+export default async function Page() {
 	const data = await getData();
 	return data.map((list, index) => (
 		<React.Fragment key={index}>
@@ -21,6 +21,8 @@ const MoviePopular = async () => {
 			{index !== list.length - 1 ? <div className="divider"></div> : null}
 		</React.Fragment>
 	));
-};
+}
 
-export default MoviePopular;
+export const metadata = {
+	title: "Popular TV shows",
+};
