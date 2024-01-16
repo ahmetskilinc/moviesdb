@@ -15,6 +15,8 @@ const WatchProviders = (props: WatchProvidersProps) => {
 		setSelectedProvider(movieWatchProviders.results[selectedCountry]);
 	}, [selectedCountry, movieWatchProviders.results]);
 
+	const sortedProviders = providers.sort((a, b) => a.english_name.localeCompare(b.english_name));
+
 	return (
 		<Collapse title="Where to watch">
 			<select
@@ -25,7 +27,7 @@ const WatchProviders = (props: WatchProvidersProps) => {
 				<option disabled value="default">
 					Select a region
 				</option>
-				{providers.map((provider: MovieWatchProviders.Result) => (
+				{sortedProviders.map((provider: MovieWatchProviders.Result) => (
 					<option key={provider.english_name} value={provider.iso_3166_1}>
 						{provider.english_name}
 					</option>

@@ -43,7 +43,7 @@ const Hero = (props: HeroProps) => {
 					/>
 					<div>
 						<h1 className="text-xl lg:text-5xl font-bold text-white">{type === "movie" ? title : name}</h1>
-						<p className="text-gray-300 pt-2">
+						<p className="text-gray-300 pt-2 mb-3">
 							{genres.map((genre, index) => `${genre.name}${index === genres.length - 1 ? "" : ", "}`)}
 							{" - "}
 							{type === "movie"
@@ -58,8 +58,8 @@ const Hero = (props: HeroProps) => {
 								  }`
 								: "N/A"}
 						</p>
-						<p className="py-3 text-white">{overview}</p>
-						<div className="flex gap-2 items-center flex-wrap">
+						<p className="text-white line-clamp-1 md:line-clamp-3">{overview}</p>
+						<div className="flex gap-2 items-center flex-wrap mt-3">
 							{imdb_id !== null ? <ExternalLinkHero link={"https://www.imdb.com/title/" + imdb_id} title="IMDb" /> : null}
 							{facebook_id !== null ? (
 								<ExternalLinkHero link={"https://www.facebook.com/" + facebook_id} title="Facebook" />

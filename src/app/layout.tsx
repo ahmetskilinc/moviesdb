@@ -1,17 +1,22 @@
-import Container from "@/components/container";
-import Header from "@/components/header";
-import "./globals.css";
+import Drawer from "@/components/Drawer";
 import Footer from "@/components/Footer";
+import "./globals.css";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang="en">
 			<head />
 			<body>
-				<Header />
-				<Container>{children}</Container>
+				<Drawer>{children}</Drawer>
 				<Footer />
 			</body>
 		</html>
 	);
 }
+
+export const metadata = {
+	title: {
+		default: "MoviesDB",
+		template: "%s - MoviesDB",
+	},
+};
