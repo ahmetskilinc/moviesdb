@@ -74,19 +74,15 @@ export default async function Page() {
 	const moviesPopular = await getMoviesPopular();
 	const tvPopular = await getTvPopular();
 
-	return (
-		<main>
-			{homeHero !== null && moviesPopular !== null && tvPopular !== null ? (
-				<>
-					<HomeHero movies={homeHero} />
-					<MoviesList movies={moviesPopular} listTitle="Popular movies this week" type="movie" compact={false} />
-					<div className="divider"></div>
-					<MoviesList movies={tvPopular} listTitle="Popular TV shows this week" type="tv" compact={false} />
-				</>
-			) : (
-				<LoadingSpinner />
-			)}
-		</main>
+	return homeHero !== null && moviesPopular !== null && tvPopular !== null ? (
+		<>
+			<HomeHero movies={homeHero} />
+			<MoviesList movies={moviesPopular} listTitle="Popular movies this week" type="movie" compact={false} />
+			<div className="divider"></div>
+			<MoviesList movies={tvPopular} listTitle="Popular TV shows this week" type="tv" compact={false} />
+		</>
+	) : (
+		<LoadingSpinner />
 	);
 }
 

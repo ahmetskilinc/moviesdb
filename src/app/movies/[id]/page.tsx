@@ -56,10 +56,10 @@ export default async function Page({ params }: { params: { id: number } }) {
 				<meta property="twitter:image" content={`https://image.tmdb.org/t/p/w342${movie.poster_path}`} />
 			</Head> */}
 			{movie !== null && <Hero movie={movie} externalIds={movieExternalIds} type="movie" />}
-			{movieCredits !== null && <Cast credits={movieCredits} />}
+			{/* {movieCredits !== null && <Cast credits={movieCredits} />} */}
 			{movieWatchProviders !== null && <WatchProviders movieWatchProviders={movieWatchProviders} providers={providers} />}
 			{movieReviews !== null && <Reviews reviews={movieReviews} />}
-			{movie !== null ? movie.revenue ? <RevenueBudgetView budget={movie.budget} revenue={movie.revenue} /> : null : null}
+			{/* {movie !== null ? movie.revenue ? <RevenueBudgetView budget={movie.budget} revenue={movie.revenue} /> : null : null} */}
 			{movieRecommendations !== null && (
 				<MoviesList listTitle="Similar Movies" movies={movieRecommendations.results} type="movie" compact={true} />
 			)}
