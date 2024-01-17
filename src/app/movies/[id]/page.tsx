@@ -1,37 +1,16 @@
-import Cast from "../../../components/Cast";
 import Hero from "../../../components/Hero";
 import MoviesList from "../../../components/MoviesList";
-import RevenueBudgetView from "../../../components/RevBudgetView";
 import Reviews from "../../../components/Reviews";
 import WatchProviders from "../../../components/WatchProviders";
-import { getList } from "@/_api/getList";
 
 export const dynamic = "force-dynamic";
 
-const getData = async (id: number) => {
-	const movie = await getList(`movie/${id}?`);
-	const movieCredits = await getList(`movie/${id}/credits?`);
-	const movieRecommendations = await getList(`movie/${id}/recommendations?`);
-	const movieExternalIds = await getList(`movie/${id}/external_ids?`);
-	const movieReviews = await getList(`movie/${id}/reviews?`);
-	const movieWatchProviders = await getList(`movie/${id}/watch/providers?`);
-	const providers = (await getList(`watch/providers/regions?`)).results;
-
-	return {
-		movie,
-		movieCredits,
-		movieRecommendations,
-		movieExternalIds,
-		movieReviews,
-		movieWatchProviders,
-		providers,
-	};
-};
-
 export default async function Page({ params }: { params: { id: number } }) {
-	const { movie, movieCredits, movieExternalIds, movieRecommendations, movieReviews, movieWatchProviders, providers } = await getData(
-		params.id
-	);
+	const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/movies/${params.id}`);
+	const { movie, movieCredits, movieRecommendations, movieExternalIds, movieReviews, movieWatchProviders } = await res.json();
+
+	const providersRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/watch_providers`);
+	const providers = await providersRes.json();
 
 	return (
 		<>
@@ -68,9 +47,8 @@ export default async function Page({ params }: { params: { id: number } }) {
 }
 
 export const generateMetadata = async ({ params }: { params: { id: number } }) => {
-	const { movie, movieCredits, movieExternalIds, movieRecommendations, movieReviews, movieWatchProviders, providers } = await getData(
-		params.id
-	);
+	const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/movies/${params.id}`);
+	const { movie } = await res.json();
 
 	return {
 		title: movie.title,

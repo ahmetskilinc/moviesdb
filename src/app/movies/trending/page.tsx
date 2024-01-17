@@ -1,4 +1,4 @@
-import { getList } from "@/_api/getList";
+import { getList } from "@/app/api/getList";
 import MoviesList from "../../../components/MoviesList";
 import { endpoint, key } from "../../../lib/api_lib";
 

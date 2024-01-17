@@ -2,32 +2,15 @@ import Cast from "../../../components/Cast";
 import Hero from "../../../components/Hero";
 import MoviesList from "../../../components/MoviesList";
 import Reviews from "../../../components/Reviews";
-import { getList } from "@/_api/getList";
 
 export const dynamic = "force-dynamic";
 
-const getData = async (id: number) => {
-	const movie = await getList(`tv/${id}?`);
-	const movieCredits = await getList(`tv/${id}/credits?`);
-	const movieRecommendations = await getList(`tv/${id}/recommendations?`);
-	const movieExternalIds = await getList(`tv/${id}/external_ids?`);
-	const movieReviews = await getList(`tv/${id}/reviews?`);
-	const movieWatchProviders = await getList(`tv/${id}/watch/providers?`);
-	const providers = (await getList(`watch/providers/regions?`)).results;
-
-	return {
-		movie,
-		movieCredits,
-		movieRecommendations,
-		movieExternalIds,
-		movieReviews,
-		movieWatchProviders,
-		providers,
-	};
-};
-
 export default async function Page({ params }: { params: { id: number } }) {
-	const { movie, movieCredits, movieExternalIds, movieRecommendations, movieReviews } = await getData(params.id);
+	const movieRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tv_shows/${params.id}`);
+	const { tv, tvCredits, tvRecommendations, tvExternalIds, tvReviews } = await movieRes.json();
+
+	const providersRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/watch_providers`);
+	const providers = await providersRes.json();
 
 	return (
 		<>
@@ -51,22 +34,21 @@ export default async function Page({ params }: { params: { id: number } }) {
 				<meta property="twitter:description" content={movie.overview} />
 				<meta property="twitter:image" content={`https://image.tmdb.org/t/p/w342${movie.poster_path}`} />
 			</Head> */}
-			{movie !== null ? <Hero movie={movie} externalIds={movieExternalIds} type="tv" /> : null}
-			{movieCredits !== null ? <Cast credits={movieCredits} /> : null}
-			{movieReviews !== null ? <Reviews reviews={movieReviews} /> : null}
-			{movieRecommendations !== null ? (
-				<MoviesList listTitle="Similar Movies" movies={movieRecommendations.results} type="tv" compact={true} />
+			{tv !== null ? <Hero movie={tv} externalIds={tvExternalIds} type="tv" /> : null}
+			{tvCredits !== null ? <Cast credits={tvCredits} /> : null}
+			{tvReviews !== null ? <Reviews reviews={tvReviews} /> : null}
+			{tvRecommendations !== null ? (
+				<MoviesList listTitle="Similar Movies" movies={tvRecommendations.results} type="tv" compact={true} />
 			) : null}
 		</>
 	);
 }
 
 export const generateMetadata = async ({ params }: { params: { id: number } }) => {
-	const { movie, movieCredits, movieExternalIds, movieRecommendations, movieReviews, movieWatchProviders, providers } = await getData(
-		params.id
-	);
+	const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tv_shows/${params.id}`);
+	const { tv } = await res.json();
 
 	return {
-		title: movie.title || movie.name,
+		title: tv.title || tv.name,
 	};
 };

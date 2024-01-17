@@ -1,5 +1,5 @@
 import axios from "axios";
-import { endpoint, key } from "../lib/api_lib";
+import { endpoint, key } from "../../lib/api_lib";
 
 export const getList = async (url: string) => {
 	const data = await axios.get(`${endpoint}${url}${key}`).then((response) => {

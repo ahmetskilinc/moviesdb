@@ -1,4 +1,4 @@
-import { getList } from "@/_api/getList";
+import { getList } from "@/app/api/getList";
 import React from "react";
 import MoviesList from "../../../components/MoviesList";
 
