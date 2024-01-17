@@ -20,3 +20,7 @@ export const metadata = {
 		template: "%s - MoviesDB",
 	},
 };
+
+export const viewport = {
+	themeColor: "#1eb854",
+};
